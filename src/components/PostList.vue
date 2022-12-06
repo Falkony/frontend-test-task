@@ -1,11 +1,11 @@
 <script setup>
-import store from '@/store'
+import {useStore} from 'vuex'
 import {computed} from 'vue'
 import Post from './Post.vue'
-
-console.log(store);
+import Pagination from './Pagination.vue'
 
 const
+    store = useStore(),
     posts = computed(() => store.state.post.posts),
     isLoading = computed(() => store.state.post.loading),
     fetching = () => store.dispatch('post/fetchPosts')
@@ -15,8 +15,8 @@ fetching()
 </script>
 
 <template>
-    <div>
-        <h1>Post List Component</h1>
+    <div class='posts'>
+        <h1 class='posts__title'>Post List Component</h1>
 
         <div v-if='isLoading'>Loading...</div>
 
@@ -25,12 +25,14 @@ fetching()
             :post='post'
         />
 
-        <p v-if='!posts'>
-            Posts not found
-        </p>
+        <Pagination />
     </div>
 </template>
 
 <style lang="scss" scoped>
-
+.posts {
+    .posts__title {
+        margin-bottom: .7em;
+    }
+}
 </style>
