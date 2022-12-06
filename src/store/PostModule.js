@@ -1,4 +1,5 @@
-import axios from "axios"
+import axios from 'axios'
+import {debounce} from 'lodash'
 
 export const PostModule = {
     state: () => ({
@@ -7,6 +8,7 @@ export const PostModule = {
         page: 1,
         limit: 10,
         total: 0,
+        searchQuerry: ''
     }),
 
     mutations: {
@@ -21,6 +23,9 @@ export const PostModule = {
         },
         setTotal(state, total) {
             state.total = total
+        },
+        setSearchQuerry(state, searchQuerry) {
+            state.searchQuerry = searchQuerry
         }
     },
 
@@ -31,6 +36,7 @@ export const PostModule = {
                     params: {
                         _page: state.page,
                         _limit: state.limit,
+                        title_like: state.searchQuerry
                     }
                 })
 
@@ -42,8 +48,9 @@ export const PostModule = {
                 commit('setLoading', false)
             }
         },
+        searchedPosts: debounce(({dispatch}, title) => {
+            dispatch('fetchPosts', title)
+        }, 1000)
     },
-
-    getters: {},
     namespaced: true
 }

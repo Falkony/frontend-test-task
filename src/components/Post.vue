@@ -17,6 +17,7 @@ defineProps({
 <style lang="scss" scoped>
 .post {
     border: 1px solid #ccc;
+    border-radius: .3em;
     padding: .4em;
 
     &:not(:last-child) {
@@ -25,6 +26,12 @@ defineProps({
 
     .post__title {
         margin-bottom: .7em;
+    }
+
+    .post__body {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 </style>

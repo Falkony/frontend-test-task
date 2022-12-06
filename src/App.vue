@@ -18,7 +18,7 @@ import PostList from '@/components/PostList.vue'
 
 .wrapper {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 50% 50%;
     column-gap: 1em;
     padding: 1em;
 }
