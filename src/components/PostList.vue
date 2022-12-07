@@ -7,12 +7,11 @@ import Pagination from './Pagination.vue'
 const
     store = useStore(),
     searchQuerry = computed(() => store.state.post.searchQuerry),
-    setSearchQuerry = (value) => store.commit('post/setSearchQuerry', value),
     posts = computed(() => store.state.post.posts),
     isLoading = computed(() => store.state.post.loading),
-    fetching = () => store.dispatch('post/fetchPosts'),
-    searchedPosts = (value) => store.dispatch('post/searchedPosts', value)
-
+    setSearchQuerry = (value) => store.commit('post/setSearchQuerry', value),
+    searchedPosts = (value) => store.dispatch('post/searchedPosts', value),
+    fetching = () => store.dispatch('post/fetchPosts')
 
 const
     onSearch = (value) => {
@@ -39,10 +38,18 @@ onMounted(() => {
             
         <div v-if='isLoading'>Loading...</div>
 
-        <Post v-for='post in posts'
-            :key='post.id'
-            :post='post'
-        />
+        <div v-if='posts'
+            class='posts__wrapper'
+        >
+            <Post v-for='post in posts'
+                :key='post.id'
+                :post='post'
+            />
+        </div>
+
+        <div v-else>
+            Posts not found!
+        </div>
 
         <Pagination />
     </div>
@@ -50,6 +57,10 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .posts {
+    min-height: 50em;
+    display: flex;
+    flex-direction: column;
+
     .posts__title {
         margin-bottom: .7em;
     }
@@ -62,6 +73,10 @@ onMounted(() => {
             padding: .5em;
             border-radius: .3em;
         }
+    }
+
+    .posts__wrapper {
+        flex: 1;
     }
 }
 </style>

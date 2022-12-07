@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {debounce} from 'lodash'
+import debounce from '@/js/debounce.js'
 
 export const PostModule = {
     state: () => ({
