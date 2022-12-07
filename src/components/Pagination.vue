@@ -17,7 +17,7 @@ const
 </script>
 
 <template>
-    <div class='page__wrapper'>
+    <div class='wrapper-pages'>
         <div v-for='pageNumber in total'
             :key='pageNumber'
             class='page'
@@ -30,7 +30,7 @@ const
 </template>
 
 <style lang="scss" scoped>
-.page__wrapper {
+.wrapper-pages {
     display: flex;
     margin-top: .7em;
 

@@ -20,8 +20,8 @@ const onDrag = (e) => {
         draggable='true'
         @dragstart='onDrag($event)'
     >
-        <h3 class='post__title'>{{ post.id + '. ' + post.title }}</h3>
-        <p class='post__body'>{{ post.body }}</p>
+        <h3 class='title'>{{ post.id + '. ' + post.title }}</h3>
+        <p class='body'>{{ post.body }}</p>
     </div>
 </template>
 
@@ -36,11 +36,11 @@ const onDrag = (e) => {
         margin-bottom: .7em;
     }
 
-    .post__title {
+    .title {
         margin-bottom: .7em;
     }
 
-    .post__body {
+    .body {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

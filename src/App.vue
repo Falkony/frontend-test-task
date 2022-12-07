@@ -18,7 +18,7 @@ const
 </script>
 
 <template>
-    <div class='wrapper'>
+    <div class='root'>
         <div class='container'>
             <PostList />
         </div>
@@ -28,7 +28,7 @@ const
             @drop='onDrop($event)'
             @dragover='allowDrop($event)'
         >
-            <h1 class='container__title'>Post List DropZone</h1>
+            <h1 class='title'>Post List DropZone</h1>
         </div>
     </div>
 </template>
@@ -40,7 +40,7 @@ const
     box-sizing: border-box;
 }
 
-.wrapper {
+.root {
     display: grid;
     grid-template-columns: 30em 30em;
     column-gap: 1em;
@@ -51,7 +51,7 @@ const
         border-radius: .3em;
         padding: 1em;
 
-        .container__title {
+        .title {
             margin-bottom: .7em;
         }
     }

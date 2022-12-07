@@ -26,9 +26,9 @@ onMounted(() => {
 
 <template>
     <div class='posts'>
-        <h1 class='posts__title'>Post List Component</h1>
+        <h1 class='title'>Post List Component</h1>
 
-        <div class='posts__search'>
+        <div class='search'>
             <input
                 :value='searchQuerry'
                 placeholder='Search...'
@@ -38,11 +38,10 @@ onMounted(() => {
             
         <div v-if='isLoading'>Loading...</div>
 
-        <div v-if='posts'
-            class='posts__wrapper'
+        <div v-if='(posts.length > 0)'
+            class='wrapper-posts'
         >
             <Post v-for='post in posts'
-                :key='post.id'
                 :post='post'
             />
         </div>
@@ -52,20 +51,20 @@ onMounted(() => {
         </div>
 
         <Pagination />
-    </div>
+    </div>  
 </template>
 
 <style lang="scss" scoped>
 .posts {
-    min-height: 50em;
+    min-height: 60em;
     display: flex;
     flex-direction: column;
 
-    .posts__title {
+    .title {
         margin-bottom: .7em;
     }
 
-    .posts__search {
+    .search {
         margin-bottom: 1em;
 
         & input {
@@ -75,7 +74,7 @@ onMounted(() => {
         }
     }
 
-    .posts__wrapper {
+    .wrapper-posts {
         flex: 1;
     }
 }

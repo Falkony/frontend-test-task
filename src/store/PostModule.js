@@ -30,18 +30,18 @@ export const PostModule = {
     },
 
     actions: {
-        async fetchPosts({state, commit}) {
+        fetchPosts({state, commit}) {
             try {
-                const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+                axios.get('https://jsonplaceholder.typicode.com/posts', {
                     params: {
                         _page: state.page,
                         _limit: state.limit,
                         title_like: state.searchQuerry
                     }
+                }).then(response => {
+                    commit('setTotal', Math.ceil(response.headers['x-total-count'] / state.limit))
+                    commit('setPosts', response.data)
                 })
-
-                commit('setTotal', Math.ceil(response.headers['x-total-count'] / state.limit))
-                commit('setPosts', response.data)
             } catch (error) {
                 console.log(error)
             } finally {
