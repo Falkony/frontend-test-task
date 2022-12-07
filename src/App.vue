@@ -3,7 +3,7 @@ import PostList from '@/components/PostList.vue'
 
 const 
     onDrop = (e) => {
-        e.stopPropagation();
+        e.stopPropagation()
         const
             data = e.dataTransfer.getData('id'),
             el = document.getElementById(data),
@@ -14,8 +14,6 @@ const
     },
     allowDrop = (e) => {
         e.preventDefault()
-        e.dataTransfer.dropEffect = 'move'
-        return false
     }
 </script>
 
