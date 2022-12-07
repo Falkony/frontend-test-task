@@ -6,8 +6,9 @@ defineProps({
     },
 })
 
-const onDrag = (e, post) => {
+const onDrag = (e) => {
     e.dataTransfer.effectAllowed = 'move'
+    e.target.classList.add(`selected`)
     e.dataTransfer.setData('id', e.target.id)
 }
 </script>
@@ -17,10 +18,9 @@ const onDrag = (e, post) => {
         :id=post.id
         class='post'
         draggable='true'
-        :data-index='post.id'
         @dragstart='onDrag($event, post)'
     >
-        <h3 class='post__title'>{{ post.id + '-' +post.title }}</h3>
+        <h3 class='post__title'>{{ post.id + '. ' +post.title }}</h3>
         <p class='post__body'>{{ post.body }}</p>
     </div>
 </template>

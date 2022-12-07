@@ -1,8 +1,5 @@
 <script setup>
-import {ref} from 'vue'
 import PostList from '@/components/PostList.vue'
-
-const newArray = ref([])
 
 const 
     onDrop = (e) => {
@@ -13,7 +10,7 @@ const
             dropzone = e.target
 
         dropzone.appendChild(el)
-        e.dataTransfer.clearData()
+        e.dataTransfer.clearData()        
     },
     allowDrop = (e) => {
         e.preventDefault()
