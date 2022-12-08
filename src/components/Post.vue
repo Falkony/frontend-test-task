@@ -5,32 +5,27 @@ defineProps({
         required: true,
     },
 })
-
-const onDrag = (e) => {
-    e.dataTransfer.effectAllowed = 'move'
-    e.dataTransfer.dropEffect = 'move'
-    e.dataTransfer.setData('id', e.target.id)
-}
 </script>
 
 <template>
-    <div
-        :id='post.id'
-        class='post'
-        draggable='true'
-        @dragstart='onDrag($event)'
-    >
-        <h3 class='title'>{{ post.id + '. ' + post.title }}</h3>
-        <p class='body'>{{ post.body }}</p>
+    <div class='post'>
+        <h3 class='title'>
+            <span>{{ post.id }}. </span>
+            <span>{{ post.title }}</span>
+        </h3>
+
+        <p class='body'>
+            {{ post.body }}
+        </p>
     </div>
 </template>
 
 <style lang="scss" scoped>
 .post {
-    box-shadow: 0 2px 0 #ccc;
     border: 1px solid #ccc;
     border-radius: .3em;
     padding: .4em;
+    cursor: pointer;
 
     &:not(:last-child) {
         margin-bottom: .7em;
@@ -38,6 +33,7 @@ const onDrag = (e) => {
 
     .title {
         margin-bottom: .7em;
+        font-weight: 700;
     }
 
     .body {

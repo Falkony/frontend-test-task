@@ -1,8 +1,8 @@
-import { createStore } from 'vuex'
-import { PostModule } from './PostModule.js'
+import {createStore} from 'vuex'
+import {PostModule} from './PostModule.js'
 
 export default createStore({
-  modules: {
-    post: PostModule
-  }
+    modules: {
+        post: PostModule
+    }
 })

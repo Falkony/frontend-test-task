@@ -1,56 +1,89 @@
 <script setup>
-import {useStore} from 'vuex'
+import {usePosts} from '@/hooks/posts.js'
 import {computed, onMounted} from 'vue'
+import draggable from 'vuedraggable'
+// --- components --- //
 import Post from './Post.vue'
-import Pagination from './Pagination.vue'
+import PaginationModule from './PaginationModule.vue'
+import SearchModule from './SearchModule.vue'
+
+const 
+    {
+        posts, 
+        addPosts,
+        page,
+        limit,
+        setPosts,
+        setAddPosts,
+        fetchPosts
+    } = usePosts()
 
 const
-    store = useStore(),
-    searchQuerry = computed(() => store.state.post.searchQuerry),
-    posts = computed(() => store.state.post.posts),
-    isLoading = computed(() => store.state.post.loading),
-    setSearchQuerry = (value) => store.commit('post/setSearchQuerry', value),
-    searchedPosts = (value) => store.dispatch('post/searchedPosts', value),
-    fetching = () => store.dispatch('post/fetchPosts')
+    allPosts = computed(() => [
+        {
+            id: 'posts',
+            items: posts.value,
+            title: 'Posts'
+        },
+        {
+            id: 'additional_posts',
+            items: addPosts.value,
+            title: 'Additional posts'
+        }
+    ])
 
 const
-    onSearch = (value) => {
-        setSearchQuerry(value)
-        searchedPosts(searchQuerry.value)
+    onEnd = () => {
+        setPosts(posts.value)
+        setAddPosts(addPosts.value)
     }
 
 onMounted(() => {
-    fetching()
+    // prevent fetching posts if storage exists
+    if (localStorage.length > 0) {
+        return
+    }
+
+    fetchPosts({
+        _page: page.value,
+        _limit: limit.value
+    })
 })
 </script>
 
 <template>
     <div class='posts'>
-        <h1 class='title'>Post List Component</h1>
+        <h1 class='title'>
+            Posts Component
+        </h1>
 
-        <div class='search'>
-            <input
-                :value='searchQuerry'
-                placeholder='Search...'
-                @input='onSearch($event.target.value)'
-            />
+        <SearchModule />
+
+        <div class='wrapper-posts'>
+            <div v-for='post in allPosts'
+                :key='post.id'
+                class='column'
+            >
+                <h2 class='title'>
+                    {{ post.title }}
+                </h2>
+
+                <draggable
+                    class='draggable'
+                    group='posts'
+                    itemKey='id'
+                    :emptyInsertThreshold='100'
+                    :list='post.items'
+                    @end='onEnd'
+                >
+                    <template #item='{element}'>
+                        <Post :post='element' />
+                    </template>
+                </draggable>
+            </div>
         </div>
-            
-        <div v-if='isLoading'>Loading...</div>
 
-        <div v-if='(posts.length > 0)'
-            class='wrapper-posts'
-        >
-            <Post v-for='post in posts'
-                :post='post'
-            />
-        </div>
-
-        <div v-else>
-            Posts not found!
-        </div>
-
-        <Pagination />
+        <PaginationModule />
     </div>  
 </template>
 
@@ -64,18 +97,25 @@ onMounted(() => {
         margin-bottom: .7em;
     }
 
-    .search {
-        margin-bottom: 1em;
-
-        & input {
-            width: 100%;
-            padding: .5em;
-            border-radius: .3em;
-        }
-    }
-
     .wrapper-posts {
-        flex: 1;
+        display: grid;
+        grid-template-columns: 50% 50%;
+        gap: .5em;
+
+        .column {
+            border: 1px solid #ccc;
+            border-radius: .3em;
+            padding: 1em;
+            min-height: 55em;
+
+            .title {
+                margin-bottom: .7em;
+            }
+
+            .draggable {
+                height: 100%;
+            }
+        }
     }
 }
 </style>

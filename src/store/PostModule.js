@@ -1,56 +1,58 @@
 import axios from 'axios'
-import debounce from '@/js/debounce.js'
+import throttle from '@/js/throttle.js'
 
 export const PostModule = {
     state: () => ({
-        posts: [],
-        loading: true,
-        page: 1,
+        posts: JSON.parse(localStorage.getItem('posts')) || [],
+        addPosts: JSON.parse(localStorage.getItem('addPosts')) || [],
+        page: JSON.parse(localStorage.getItem('page')) || 1,
         limit: 10,
-        total: 0,
+        total: JSON.parse(localStorage.getItem('total')) || 0,
         searchQuerry: ''
     }),
-
     mutations: {
         setPosts(state, posts) {
             state.posts = posts
+
+            if (!state.searchQuerry) {
+                localStorage.setItem('posts', JSON.stringify(posts))
+            }
         },
-        setLoading(state, loading) {
-            state.loading = loading
+        setAddPosts(state, addPosts) {
+            state.addPosts = addPosts
+            localStorage.setItem('addPosts', JSON.stringify(addPosts))
         },
         setPage(state, page) {
             state.page = page
+            localStorage.setItem('page', page)
         },
         setTotal(state, total) {
             state.total = total
+            localStorage.setItem('total', total)
         },
         setSearchQuerry(state, searchQuerry) {
             state.searchQuerry = searchQuerry
         }
     },
-
     actions: {
-        fetchPosts({state, commit}) {
-            try {
-                axios.get('https://jsonplaceholder.typicode.com/posts', {
-                    params: {
-                        _page: state.page,
-                        _limit: state.limit,
-                        title_like: state.searchQuerry
-                    }
-                }).then(response => {
+        fetchPosts({state, commit}, querryParams) {
+            axios
+                .get('https://jsonplaceholder.typicode.com/posts', {
+                    params: querryParams
+                })
+                .then(response => {
                     commit('setTotal', Math.ceil(response.headers['x-total-count'] / state.limit))
                     commit('setPosts', response.data)
                 })
-            } catch (error) {
-                console.log(error)
-            } finally {
-                commit('setLoading', false)
-            }
         },
-        searchedPosts: debounce(({dispatch}, title) => {
-            dispatch('fetchPosts', title)
-        }, 1000)
+        searchedPosts: throttle(({state, dispatch}) => {
+            dispatch('fetchPosts', {
+                _page: state.page,
+                _limit: state.limit,
+                title_like: state.searchQuerry,
+            })
+        }, 700)
     },
+    getters: {},
     namespaced: true
 }
